@@ -1,0 +1,57 @@
+#ifndef _GLOB_H_
+#define _GLOB_H_
+#include <CGAL/Line_2.h>
+#include <CGAL/Origin.h>
+#include <CGAL/Polygon_2.h>
+#include <CGAL/Cartesian.h>
+#include <CGAL/point_generators_2.h>
+#include <CGAL/squared_distance_2.h>
+#include <CGAL/Aff_transformation_2.h>
+#include <CGAL/Delaunay_mesh_face_base_2.h>
+#include <CGAL/Triangulation_face_base_with_info_2.h>
+#include <CGAL/Constrained_Delaunay_triangulation_2.h>
+
+#include <GeographicLib/Geodesic.hpp>
+#include <GeographicLib/Constants.hpp>
+#include <GeographicLib/GeoCoords.hpp>
+#include <GeographicLib/LocalCartesian.hpp>
+
+#include <osrm/match_parameters.hpp>
+#include <osrm/nearest_parameters.hpp>
+#include <osrm/route_parameters.hpp>
+#include <osrm/table_parameters.hpp>
+#include <osrm/trip_parameters.hpp>
+#include <osrm/coordinate.hpp>
+#include <osrm/engine_config.hpp>
+#include <osrm/json_container.hpp>
+#include <osrm/osrm.hpp>
+#include <osrm/status.hpp>
+
+#include <exception>
+#include <iostream>
+#include <utility>
+#include <cstdlib>
+#include <memory>
+#include <string>
+#include <list>
+
+#include <json.hpp>
+
+typedef CGAL::Cartesian<double> K;
+typedef CGAL::Aff_transformation_2<K> Transformation;
+typedef CGAL::Line_2<K>    Line2D;
+typedef CGAL::Point_2<K>   Point2D;
+typedef CGAL::Vector_2<K>  Vector2D;
+typedef CGAL::Polygon_2<K> Polygon2D;
+
+typedef CGAL::Triangulation_vertex_base_2<K>                      Vb;
+typedef CGAL::Delaunay_mesh_face_base_2<K>                        Fb;
+typedef CGAL::Triangulation_data_structure_2<Vb, Fb>              Tds;
+typedef CGAL::Constrained_Delaunay_triangulation_2<K, Tds>        CDT;
+
+using json=nlohmann::json;
+using namespace GeographicLib;
+
+#define CLOSE_ENOUGH 1.0
+
+#endif
