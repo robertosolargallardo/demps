@@ -1,24 +1,55 @@
 #ifndef _ENVIRONMENT_H_
 #define _ENVIRONMENT_H_
-#include <spatial/idle_point_multiset.hpp>
-#include <spatial/neighbor_iterator.hpp>
+#include "Glob.h"
 #include "Agent.h"
 
 class Environment {
 private:
-    struct Accessor {
-        double operator()(spatial::dimension_type dim,const std::shared_ptr<Agent> &_agent) const {
-            return(_agent->position()[dim]);
+    class Wrapper {
+    public:
+        typedef double value_type;
+        std::shared_ptr<Agent> _agent;
+
+        Wrapper(void) {
+            ;
+        }
+        Wrapper(const std::shared_ptr<Agent> &_agent) {
+            this->_agent=_agent;
+        }
+        Wrapper(const Wrapper &_wrapper) {
+            this->_agent=_wrapper._agent;
+        }
+        Wrapper& operator=(const Wrapper &_wrapper) {
+            this->_agent=_wrapper._agent;
+            return(*this);
+        }
+        ~Wrapper(void) {
+            ;
+        }
+        inline value_type operator[](size_t const k) const {
+            return(this->_agent->position()[k]);
+        }
+        std::shared_ptr<Agent> agent(void) const {
+            return(this->_agent);
+        }
+		  double distance(Wrapper const &_wrapper) const{
+            return(sqrt(CGAL::squared_distance(this->_agent->position(),_wrapper.agent()->position())));
         }
     };
 
+
 public:
-    typedef spatial::idle_point_multiset<2,std::shared_ptr<Agent>,spatial::accessor_less<Accessor,std::shared_ptr<Agent>>> kdtree;
-    typedef std::pair<double,std::shared_ptr<Agent>> neighbor;
-    typedef std::vector<neighbor> neighbors;
+    typedef KDTree::KDTree<2,Wrapper> kdtree;
+    struct Neighbor{
+		double                 distance;
+      std::shared_ptr<Agent> agent;
+	 };
+    typedef std::vector<Neighbor> neighbors;
+   
 
 private:
-    std::array<std::shared_ptr<kdtree>,2> _container;
+    std::array<std::shared_ptr<std::vector<Wrapper>>,2>  _agents;
+    std::shared_ptr<kdtree> 					               _tree;
 
 public:
     Environment(void);
@@ -27,7 +58,7 @@ public:
 
     Environment& operator=(const Environment&);
 
-    kdtree& agents(void) const;
+    std::vector<std::shared_ptr<Agent>> agents(void) const;
     void insert(const std::shared_ptr<Agent>&);
     neighbors neighbors_of(const std::shared_ptr<Agent>&,const double&);
     void swap(void);

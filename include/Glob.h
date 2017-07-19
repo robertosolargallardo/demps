@@ -36,6 +36,7 @@
 #include <list>
 
 #include <json.hpp>
+#include <kdtree++/kdtree.hpp>
 
 typedef CGAL::Cartesian<double> K;
 typedef CGAL::Aff_transformation_2<K> Transformation;
