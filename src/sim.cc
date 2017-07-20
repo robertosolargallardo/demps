@@ -94,6 +94,7 @@ int main(int argc,char** argv) {
 
     Simulator sim(settings,initial_zones,reference_zones);
 
+    sim.calibrate();
     sim.run();
 
     return(0);

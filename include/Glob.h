@@ -54,7 +54,8 @@ typedef CGAL::Constrained_Delaunay_triangulation_2<K, Tds>        CDT;
 using json=nlohmann::json;
 using namespace GeographicLib;
 
-#define CLOSE_ENOUGH 1.0
-#define RANDOM_WALKWAY_RADIUS 250.0
+#define CLOSE_ENOUGH          1.0
+#define RANDOM_WALKWAY_RADIUS 500.0
+#define CALIBRATION_TIME      250U
 
 #endif

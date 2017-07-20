@@ -21,7 +21,6 @@ private:
     std::vector<Zone> 							_reference_zones;
     std::vector<std::shared_ptr<Agent>>  	_agents;
 
-    void calibrate(void);
     void run(const uint32_t&,const bool&);
     void save(const uint32_t&);
 
@@ -30,6 +29,7 @@ public:
     Simulator(const json&,const json&,const json&);
 
     void run(void);
+    void calibrate(void);
 
     ~Simulator(void);
 };
