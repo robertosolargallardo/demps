@@ -2,7 +2,8 @@
 #define _ROUTER_H_
 #include "Glob.h"
 
-extern LocalCartesian projector;
+extern std::mt19937 rng;
+extern std::shared_ptr<LocalCartesian> projector;
 
 class Router {
 
@@ -57,6 +58,7 @@ public:
     Router& operator=(const Router&);
 
     Response route(const Point2D&,const Point2D&);
+    Response route(const Point2D&,const double&);
 
 };
 #endif

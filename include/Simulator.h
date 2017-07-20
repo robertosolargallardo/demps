@@ -1,38 +1,25 @@
 #ifndef _SIMULATOR_H_
 #define _SIMULATOR_H_
-#include <vector>
-#include <string>
-#include <memory>
-#include <fstream>
-#include <json.hpp>
-#include <spatial/point_multiset.hpp>
-#include <spatial/neighbor_iterator.hpp>
-#include <GeographicLib/GeoCoords.hpp>
-#include <osrm/osrm.hpp>
-#include <parallel/algorithm>
-
+#include "Glob.h"
 #include "Zone.h"
 #include "Agent.h"
 #include "Router.h"
 #include "Environment.h"
 
-using namespace GeographicLib;
-using json=nlohmann::json;
+extern std::shared_ptr<Router> router;
 
 class Simulator {
 private:
 
     static const std::hash<std::string> _hash;
 
-    std::shared_ptr<Router> 		_router;
+    std::shared_ptr<Environment> _env;
     json									_fsettings;
 
-    Environment	_environment;
-
-    std::vector<GeoCoords> 						_reference_points;
+    std::vector<GeoCoords> 					_reference_points;
     std::vector<Zone> 							_initial_zones;
     std::vector<Zone> 							_reference_zones;
-    //std::vector<std::shared_ptr<Agent>>  	_agents;
+    std::vector<std::shared_ptr<Agent>>  	_agents;
 
     void calibrate(void);
     void run(const uint32_t&,const bool&);
@@ -40,7 +27,7 @@ private:
 
 public:
     Simulator(void);
-    Simulator(const json&,const json&,const json&,const std::string&);
+    Simulator(const json&,const json&,const json&);
 
     void run(void);
 

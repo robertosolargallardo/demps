@@ -1,8 +1,10 @@
 #ifndef _AGENT_H_
 #define _AGENT_H_
 #include "Glob.h"
+#include "Router.h"
 
-extern std::mt19937 rng;
+extern std::mt19937            rng;
+extern std::shared_ptr<Router> router;
 
 enum MobilityModel {SHORTESTPATH=9366416273040049814U,FOLLOWTHECROWD=10676684734677566718U,RANDOMWALKWAY,WORKINGDAY};
 
@@ -20,7 +22,7 @@ private:
 public:
     Agent(void);
     Agent(const Agent&);
-    Agent(const uint32_t&,const Point2D&,const double&,const double&);
+    Agent(const uint32_t&,const Point2D&,const std::list<Point2D>&,const double&,const double&);
     ~Agent(void);
     Agent& operator=(const Agent&);
 
@@ -36,5 +38,6 @@ public:
 
     void update(void);
     void follow_path(void);
+    void random_walkway(void);
 };
 #endif

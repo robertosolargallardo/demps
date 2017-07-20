@@ -3,8 +3,7 @@
 Simulator::Simulator(void) {
 
 }
-Simulator::Simulator(const json &_fsettings,const json &_finitial_zones,const json &_freference_zones,const std::string &_map_osrm) {
-    this->_router=std::make_shared<Router>(_map_osrm);
+Simulator::Simulator(const json &_fsettings,const json &_finitial_zones,const json &_freference_zones) {
     this->_fsettings=_fsettings;
 
     for(auto& feature : _freference_zones["features"])
@@ -17,9 +16,11 @@ Simulator::Simulator(const json &_fsettings,const json &_finitial_zones,const js
     std::uniform_int_distribution<uint32_t> zone(0U,this->_initial_zones.size()-1U);
     for(auto& fagent : _fsettings["agents"]) {
         for(uint32_t i=0U; i<uint32_t(fagent["number"]); i++,id++) {
-            auto agent=std::make_shared<Agent>(id,this->_initial_zones[zone(rng)].generate(),fagent["speed"]["min"],fagent["speed"]["max"]);
+            Point2D position=this->_initial_zones[zone(rng)].generate();
+            auto response=router->route(position,RANDOM_WALKWAY_RADIUS);
+            auto agent=std::make_shared<Agent>(id,position,response.path(),fagent["speed"]["min"],fagent["speed"]["max"]);
 
-            switch(this->_hash(fagent["model"])) {
+            /*switch(this->_hash(fagent["model"])) {
             case SHORTESTPATH: {
                 double distance=DBL_MAX;
                 for(auto &reference_zone : this->_reference_zones) {
@@ -38,11 +39,11 @@ Simulator::Simulator(const json &_fsettings,const json &_finitial_zones,const js
                 std::cerr << "error::simulator_constructor::unknown_mobility_model::\"" << fagent["model"] << "\"" << std::endl;
                 exit(EXIT_FAILURE);
             }
-            }
-            this->_environment.insert(agent);
+            }*/
+            this->_agents.push_back(agent);
         }
     }
-    this->_environment.swap();
+    this->_env=std::make_shared<Environment>(this->_agents);
 }
 void Simulator::calibrate(void) {
 
@@ -52,9 +53,9 @@ void Simulator::run(void) {
 }
 void Simulator::save(const uint32_t &_t) {
     std::ofstream ofs(this->_fsettings["output"]["directory-path"].get<std::string>()+"/"+this->_fsettings["output"]["filename-prefix"].get<std::string>()+std::to_string(_t)+this->_fsettings["output"]["filename-sufix"].get<std::string>());
-    for(auto& agent : this->_environment.agents()){
+    for(auto& agent : this->_agents) {
         double latitude,longitude,h;
-        projector.Reverse(agent->position()[0],agent->position()[1],0,latitude,longitude,h);
+        projector->Reverse(agent->position()[0],agent->position()[1],0,latitude,longitude,h);
         ofs << agent->id() << " " << latitude << " " << longitude << std::endl;
     }
 }
@@ -64,12 +65,13 @@ void Simulator::run(const uint32_t &_duration,const bool &_save_to_disk) {
     for(uint32_t t=0U; t<_duration; t++) {
         if(_save_to_disk) this->save(t);
 
-        for(auto& agent : this->_environment.agents()) {
-            Environment::neighbors neighbors;//=this->_environment.neighbors_of(agent,0.0);
+        for(auto& agent : this->_agents) {
+            agent->random_walkway();
+            /*Environment::neighbors neighbors;//=this->_environment.neighbors_of(agent,0.0);
 
             auto copy=std::make_shared<Agent>(*agent.get());
             copy->follow_path();
-            this->_environment.insert(copy);
+            this->_environment.insert(copy);*/
         }
 
         /*auto& environment=this->_environment;
@@ -81,7 +83,7 @@ void Simulator::run(const uint32_t &_duration,const bool &_save_to_disk) {
         	#pragma omp critical
         		environment.insert(copy);
         });*/
-        this->_environment.swap();
+        //this->_env->update(this->_agents);
     }
 }
 

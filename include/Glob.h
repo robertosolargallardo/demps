@@ -31,6 +31,7 @@
 #include <iostream>
 #include <utility>
 #include <cstdlib>
+#include <fstream>
 #include <memory>
 #include <string>
 #include <list>
@@ -54,5 +55,6 @@ using json=nlohmann::json;
 using namespace GeographicLib;
 
 #define CLOSE_ENOUGH 1.0
+#define RANDOM_WALKWAY_RADIUS 250.0
 
 #endif

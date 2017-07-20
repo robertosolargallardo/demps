@@ -3,7 +3,7 @@
 #include "Glob.h"
 
 extern std::mt19937   rng;
-extern LocalCartesian projector;
+extern std::shared_ptr<LocalCartesian> projector;
 
 class Zone {
 private:

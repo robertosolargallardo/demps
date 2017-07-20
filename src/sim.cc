@@ -6,9 +6,11 @@
 #include "../include/Simulator.h"
 
 std::random_device device;
-std::mt19937 rng(0/*device()*/);
+//std::mt19937 rng(0);
+std::mt19937 rng(device());
 
-LocalCartesian projector;
+std::shared_ptr<LocalCartesian> projector;
+std::shared_ptr<Router>         router;
 
 int main(int argc,char** argv) {
     char c;
@@ -19,19 +21,19 @@ int main(int argc,char** argv) {
     json reference_zones;
     json reference_point;
 
-    while((c=getopt(argc,argv,"m:s:i:r:p:"))!=-1) {
+    while((c=getopt(argc,argv,"m:s:i:r:p:a:"))!=-1) {
         switch(c) {
         case 'm': {
             map_osrm=std::string(optarg);
             break;
         }
-        /*case 'a': {
+        case 'a': {
             std::ifstream ifs;
             ifs.open(optarg,std::ifstream::in);
             ifs >> area;
             ifs.close();
             break;
-        }*/
+        }
         case 's': {
             std::ifstream ifs;
             ifs.open(optarg,std::ifstream::in);
@@ -69,7 +71,9 @@ int main(int argc,char** argv) {
     if(map_osrm.empty()) {
         std::cerr << "Mandatory parameter -m <map.osrm> needed" << std::endl;
         exit(EXIT_FAILURE);
-    }
+    } else
+        router=std::make_shared<Router>(map_osrm);
+
     if(settings.empty()) {
         std::cerr << "Mandatory parameter -s <settings.json> needed" << std::endl;
         exit(EXIT_FAILURE);
@@ -86,9 +90,9 @@ int main(int argc,char** argv) {
         std::cerr << "Mandatory parameter -p <reference-point.geojson> needed" << std::endl;
         exit(EXIT_FAILURE);
     } else
-		  projector=LocalCartesian(reference_point["features"][0]["geometry"]["coordinates"][1],reference_point["features"][0]["geometry"]["coordinates"][0],0,Geocentric::WGS84());
+        projector=std::make_shared<LocalCartesian>(reference_point["features"][0]["geometry"]["coordinates"][1],reference_point["features"][0]["geometry"]["coordinates"][0],0,Geocentric::WGS84());
 
-    Simulator sim(settings,initial_zones,reference_zones,map_osrm);
+    Simulator sim(settings,initial_zones,reference_zones);
 
     sim.run();
 
