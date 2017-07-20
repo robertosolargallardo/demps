@@ -13,6 +13,7 @@ LocalCartesian projector;
 int main(int argc,char** argv) {
     char c;
     std::string map_osrm;
+    json area;
     json settings;
     json initial_zones;
     json reference_zones;
@@ -24,6 +25,13 @@ int main(int argc,char** argv) {
             map_osrm=std::string(optarg);
             break;
         }
+        /*case 'a': {
+            std::ifstream ifs;
+            ifs.open(optarg,std::ifstream::in);
+            ifs >> area;
+            ifs.close();
+            break;
+        }*/
         case 's': {
             std::ifstream ifs;
             ifs.open(optarg,std::ifstream::in);
@@ -67,15 +75,15 @@ int main(int argc,char** argv) {
         exit(EXIT_FAILURE);
     }
     if(initial_zones.empty()) {
-        std::cerr << "Mandatory parameter -i <initial-zones.json> needed" << std::endl;
+        std::cerr << "Mandatory parameter -i <initial-zones.geojson> needed" << std::endl;
         exit(EXIT_FAILURE);
     }
     if(reference_zones.empty()) {
-        std::cerr << "Mandatory parameter -r <reference-zones.json> needed" << std::endl;
+        std::cerr << "Mandatory parameter -r <reference-zones.geojson> needed" << std::endl;
         exit(EXIT_FAILURE);
     }
     if(reference_point.empty()) {
-        std::cerr << "Mandatory parameter -p <reference-point.json> needed" << std::endl;
+        std::cerr << "Mandatory parameter -p <reference-point.geojson> needed" << std::endl;
         exit(EXIT_FAILURE);
     } else
 		  projector=LocalCartesian(reference_point["features"][0]["geometry"]["coordinates"][1],reference_point["features"][0]["geometry"]["coordinates"][0],0,Geocentric::WGS84());
