@@ -13,6 +13,8 @@ Zone::Zone(const json &_fpolygon) {
         this->_polygon.push_back(Point2D(x,y));
     }
     this->_cdt.insert_constraint(this->_polygon.vertices_begin(),this->_polygon.vertices_end(),true);
+    CGAL::refine_Delaunay_mesh_2(this->_cdt,Mesh_2_criteria());
+
 }
 Zone::Zone(const Zone &_z) {
     this->_cdt=_z._cdt;

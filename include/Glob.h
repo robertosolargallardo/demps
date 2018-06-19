@@ -4,12 +4,15 @@
 #include <CGAL/Origin.h>
 #include <CGAL/Polygon_2.h>
 #include <CGAL/Cartesian.h>
+#include <CGAL/Delaunay_mesher_2.h>
 #include <CGAL/point_generators_2.h>
 #include <CGAL/squared_distance_2.h>
 #include <CGAL/Aff_transformation_2.h>
 #include <CGAL/Delaunay_mesh_face_base_2.h>
+#include <CGAL/Delaunay_mesh_size_criteria_2.h>
 #include <CGAL/Triangulation_face_base_with_info_2.h>
 #include <CGAL/Constrained_Delaunay_triangulation_2.h>
+
 
 #include <GeographicLib/Geodesic.hpp>
 #include <GeographicLib/Constants.hpp>
@@ -50,6 +53,7 @@ typedef CGAL::Triangulation_vertex_base_2<K>                      Vb;
 typedef CGAL::Delaunay_mesh_face_base_2<K>                        Fb;
 typedef CGAL::Triangulation_data_structure_2<Vb, Fb>              Tds;
 typedef CGAL::Constrained_Delaunay_triangulation_2<K, Tds>        CDT;
+typedef CGAL::Delaunay_mesh_size_criteria_2<CDT>                  Mesh_2_criteria;
 
 using json=nlohmann::json;
 using namespace GeographicLib;
