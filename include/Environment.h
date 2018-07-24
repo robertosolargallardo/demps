@@ -10,6 +10,7 @@ private:
     public:
         typedef double value_type;
         uint32_t  _id;
+        uint32_t  _model;
         Point2D	_position;
         Vector2D	_direction;
 
@@ -18,17 +19,20 @@ private:
         }
         Node(const std::shared_ptr<Agent> &_agent) {
             this->_id=_agent->id();
+            this->_model=_agent->model();
             this->_position=_agent->position();
             this->_direction=_agent->direction();
 
         }
         Node(const Node &_node) {
             this->_id=_node._id;
+            this->_model=_node._model;
             this->_position=_node._position;
             this->_direction=_node._direction;
         }
         Node& operator=(const Node &_node) {
             this->_id=_node._id;
+            this->_model=_node._model;
             this->_position=_node._position;
             this->_direction=_node._direction;
             return(*this);

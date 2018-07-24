@@ -2,7 +2,7 @@
 	"duration"  : 3000,
 	"agents":[
 		{
-			"number" : 24000,
+			"number" : 15000,
 			"model" : "ShortestPath",
 			"speed" : {
 				"min" : 0.6, 
@@ -10,7 +10,7 @@
 			}
 		},
 		{
-			"number" : 0,
+			"number" : 2500,
 			"model" : "FollowTheCrowd",
 			"speed" : {
 				"min" : 0.1, 
@@ -18,7 +18,7 @@
 			}
 		},
 		{
-			"number" : 1500,
+			"number" : 500,
 			"model" : "RandomWalkway",
 			"speed" : {
 				"min" : 0.1, 

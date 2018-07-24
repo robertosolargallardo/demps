@@ -10,15 +10,14 @@ Agent::Agent(const Agent &_agent) {
     this->_model=_agent._model;
     this->_position=_agent._position;
     this->_direction=_agent._direction;
-    this->_path=_agent._path;
 }
-Agent::Agent(const uint32_t &_id,const Point2D &_position,const std::list<Point2D> &_path,const double &_min_speed,const double &_max_speed,const Model &_model) {
+Agent::Agent(const uint32_t &_id,const Point2D &_position,const double &_min_speed,const double &_max_speed,const Model &_model) {
     this->_id=_id;
     this->_min_speed=_min_speed;
     this->_max_speed=_max_speed;
     this->_position=_position;
+    this->_direction=Vector2D(0.0,0.0);
     this->_model=_model;
-    this->path(_path);
 }
 Agent& Agent::operator=(const Agent &_agent) {
     this->_id=_agent._id;
@@ -27,58 +26,52 @@ Agent& Agent::operator=(const Agent &_agent) {
     this->_model=_agent._model;
     this->_position=_agent._position;
     this->_direction=_agent._direction;
-    this->_path=_agent._path;
     return(*this);
 }
 uint32_t Agent::id(void) const {
     return(this->_id);
 }
 Agent::~Agent(void) {
-    this->_path.clear();
+	;
 }
-std::list<Point2D> Agent::path(void) const {
-    return(this->_path);
-}
-void Agent::path(const std::list<Point2D> &_path) {
-    this->_path=_path;
+void Agent::follow_the_crowd(const Neighbors &_neighbors){
+	Vector2D direction(0.0,0.0);
 
-	 double dist=sqrt(CGAL::squared_distance(this->_position,this->_path.front()));
-    Transformation scale(CGAL::SCALING,1.0,dist);
-    this->_direction=Vector2D(this->_position,this->_path.front());
-    this->_direction=scale(this->_direction);
+   std::uniform_real_distribution<double> speed(this->_min_speed,this->_max_speed);
 
+	for(auto& neighbor : _neighbors)
+		direction+=neighbor.direction;
+
+   Transformation scale(CGAL::SCALING,1.0,sqrt(direction.squared_length()));
+   this->_direction=scale(direction);
+
+   Transformation translate(CGAL::TRANSLATION,this->_direction*speed(rng));
+   this->_position=translate(this->_position);
 }
-void Agent::random_walkway(void) {
-    if(this->_path.empty()) {
-        auto response=router->route(this->_position,RANDOM_WALKWAY_RADIUS);
-        this->_path=response.path();
-    }
-    this->move();
+void Agent::random_walkway(std::list<Point2D> &_path) {
+    this->follow_path(_path);
 }
-void Agent::move(void) {
-    if(this->_path.empty()) return;
+void Agent::follow_path(std::list<Point2D> &_path){
+    if(_path.empty()) return;
 
     std::uniform_real_distribution<double> speed(this->_min_speed,this->_max_speed);
 
-    while(!this->_path.empty()) {
-        Point2D dst=this->_path.front();
+    while(!_path.empty()) {
+        Point2D dst=_path.front();
         double dist=sqrt(CGAL::squared_distance(this->_position,dst));
 
         if(dist<CLOSE_ENOUGH) {
-            this->_path.pop_front();
+            _path.pop_front();
             continue;
         }
 
-        Transformation scale(CGAL::SCALING,1,dist);
+        Transformation scale(CGAL::SCALING,1.0,dist);
         Vector2D direction(this->_position,dst);
         direction=scale(direction);
 
         Transformation translate(CGAL::TRANSLATION,direction*speed(rng));
 
-        //std::cout << this->_position << std::endl;
         this->_position=translate(this->_position);
-        //std::cout << this->_position << std::endl;
-        //exit(0);
         break;
     }
 }

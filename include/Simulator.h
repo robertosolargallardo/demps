@@ -21,6 +21,8 @@ private:
     std::vector<Zone> 							_reference_zones;
     std::vector<std::shared_ptr<Agent>>  	_agents;
 
+	 std::map<uint32_t,std::list<Point2D>> _routes;
+
     void run(const uint32_t&,const bool&);
     void save(const uint32_t&);
 

@@ -61,5 +61,7 @@ using namespace GeographicLib;
 #define CLOSE_ENOUGH          1.0
 #define RANDOM_WALKWAY_RADIUS 500.0
 #define CALIBRATION_TIME      250U
+#define ATTRACTION_RADIUS     2
+#define SAVE                  10
 
 #endif

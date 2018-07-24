@@ -2,6 +2,7 @@
 #define _AGENT_H_
 #include "Glob.h"
 #include "Router.h"
+#include "Neighbor.h"
 
 extern std::mt19937            rng;
 extern std::shared_ptr<Router> router;
@@ -17,14 +18,12 @@ private:
     Point2D						_position;
     Vector2D					_direction;
 
-    std::list<Point2D>     _path;
-
 	 Model                  _model;
 
 public:
     Agent(void);
     Agent(const Agent&);
-    Agent(const uint32_t&,const Point2D&,const std::list<Point2D>&,const double&,const double&,const Model&);
+    Agent(const uint32_t&,const Point2D&,const double&,const double&,const Model&);
     ~Agent(void);
     Agent& operator=(const Agent&);
 
@@ -39,7 +38,8 @@ public:
     std::list<Point2D> path(void) const;
     void path(const std::list<Point2D>&);
 
-    void move(void);
-    void random_walkway(void);
+    void follow_path(std::list<Point2D>&);
+    void random_walkway(std::list<Point2D>&);
+	 void follow_the_crowd(const Neighbors&);
 };
 #endif

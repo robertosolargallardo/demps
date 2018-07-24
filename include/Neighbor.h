@@ -5,7 +5,8 @@
 struct Neighbor {
     double   distance;
     uint32_t id;
-    Point2D 	position;
+    uint32_t model;
+    Point2D  position;
     Vector2D direction;
 };
 typedef std::vector<Neighbor> Neighbors;

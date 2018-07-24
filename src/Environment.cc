@@ -37,7 +37,7 @@ Neighbors Environment::neighbors_of(const std::shared_ptr<Agent> &_agent,const d
     for (std::deque<Node>::iterator node=results.begin(); node!=results.end(); ++node) {
         dist=query.distance(*node);
         if(dist<=_max_distance)
-            neighbors.push_back({dist,node->_id,node->_position,node->_direction});
+            neighbors.push_back({dist,node->_id,node->_model,node->_position,node->_direction});
     }
 
     return(neighbors);
