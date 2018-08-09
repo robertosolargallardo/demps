@@ -44,7 +44,7 @@
 #include <json.hpp>
 #include <kdtree++/kdtree.hpp>
 
-#define CGAL_HAS_THREADS 
+#define CGAL_HAS_THREADS
 
 typedef CGAL::Simple_cartesian<double> K;
 typedef CGAL::Aff_transformation_2<K> Transformation;

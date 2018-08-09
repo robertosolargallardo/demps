@@ -5,7 +5,7 @@
 
 class Agent
 {
-public:	
+public:
     typedef double value_type;
     typedef std::vector<Agent> Neighbors;
 
@@ -38,10 +38,12 @@ public:
     void random_walkway(std::list<Point2D>&);
     void follow_the_crowd(const Neighbors&);
 
-	 inline value_type operator[](size_t const &k) const{
+    inline value_type operator[](size_t const &k) const
+    {
         return(this->_position[k]);
     }
-    double distance(Agent const &_agent) const{
+    double distance(Agent const &_agent) const
+    {
         return(sqrt(CGAL::squared_distance(this->_position,_agent._position)));
     }
 };

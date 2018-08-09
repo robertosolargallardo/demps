@@ -11,14 +11,14 @@ class Simulator
 private:
 
     static const std::hash<std::string> _hash;
-    json									_fsettings;
+    json                                _fsettings;
 
-    Router                                _router;
-    LocalCartesian                        _projector;
-    std::vector<GeoCoords> 					_reference_points;
-    std::vector<Zone> 							_initial_zones;
-    std::vector<Zone> 							_reference_zones;
-    std::vector<Agent>  						_agents;
+    Router                              _router;
+    LocalCartesian                      _projector;
+    std::vector<GeoCoords>              _reference_points;
+    std::vector<Zone>                   _initial_zones;
+    std::vector<Zone>                   _reference_zones;
+    std::vector<Agent>                  _agents;
 
     std::map<uint32_t,std::list<Point2D>> _routes;
 
