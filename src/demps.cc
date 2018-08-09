@@ -2,15 +2,10 @@
 #include <fstream>
 #include <unistd.h>
 #include <json.hpp>
-#include "../include/Glob.h"
-#include "../include/Simulator.h"
-
-std::random_device device;
-//std::mt19937 rng(0);
-std::mt19937 rng(device());
+#include <glob.hh>
+#include <simulator.hh>
 
 std::shared_ptr<LocalCartesian> projector;
-std::shared_ptr<Router>         router;
 
 int main(int argc,char** argv) {
     char c;
@@ -71,9 +66,7 @@ int main(int argc,char** argv) {
     if(map_osrm.empty()) {
         std::cerr << "Mandatory parameter -m <map.osrm> needed" << std::endl;
         exit(EXIT_FAILURE);
-    } else
-        router=std::make_shared<Router>(map_osrm);
-
+    } 
     if(settings.empty()) {
         std::cerr << "Mandatory parameter -s <settings.json> needed" << std::endl;
         exit(EXIT_FAILURE);
@@ -89,10 +82,10 @@ int main(int argc,char** argv) {
     if(reference_point.empty()) {
         std::cerr << "Mandatory parameter -p <reference-point.geojson> needed" << std::endl;
         exit(EXIT_FAILURE);
-    } else
-        projector=std::make_shared<LocalCartesian>(reference_point["features"][0]["geometry"]["coordinates"][1],reference_point["features"][0]["geometry"]["coordinates"][0],0,Geocentric::WGS84());
+    } /*else
+        projector=std::make_shared<LocalCartesian>(reference_point["features"][0]["geometry"]["coordinates"][1],reference_point["features"][0]["geometry"]["coordinates"][0],0,Geocentric::WGS84());*/
 
-    Simulator sim(settings,initial_zones,reference_zones);
+    Simulator sim(settings,initial_zones,reference_zones,reference_point,map_osrm);
 
     sim.calibrate();
     sim.run();

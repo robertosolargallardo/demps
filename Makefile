@@ -1,25 +1,25 @@
 CXX=g++
 LIBRARY=-L/usr/local/lib
-INCLUDE=-I/usr/local/include/nlohmann -I/usr/local/include/osrm
+INCLUDE=-I/usr/local/include/nlohmann -I/usr/local/include/osrm -I./include -I/home/rsolar/SIMILARITY_CACHING/src/liblistofclusters/include/
 CXXFLAGS=-std=c++14 -g -ggdb -Wall -losrm -lGeographic -O3 -ltbb -lboost_system -lboost_filesystem -lpthread -lboost_iostreams -lboost_thread -lrt -fopenmp -lCGAL
 
-OBJS=obj/sim.o obj/Zone.o obj/Simulator.o obj/Agent.o obj/Router.o obj/Environment.o
+OBJS=obj/demps.o obj/zone.o obj/simulator.o obj/agent.o obj/router.o obj/environment.o
 TARGET=demps
 
 $(TARGET):$(OBJS)
 	       $(CXX) $^ -o $@ $(CXXFLAGS) $(LIBRARY) $(INCLUDE)
 
-obj/sim.o:src/sim.cc
+obj/demps.o:src/demps.cc
 	       $(CXX) -c $< -o $@ $(CXXFLAGS) $(LIBRARY) $(INCLUDE)
-obj/Zone.o:src/Zone.cc include/Zone.h
+obj/zone.o:src/zone.cc include/zone.hh
 	        $(CXX) -c $< -o $@ $(CXXFLAGS) $(LIBRARY) $(INCLUDE)
-obj/Simulator.o:src/Simulator.cc include/Simulator.h
+obj/simulator.o:src/simulator.cc include/simulator.hh
 	             $(CXX) -c $< -o $@ $(CXXFLAGS) $(LIBRARY) $(INCLUDE)
-obj/Agent.o:src/Agent.cc include/Agent.h
+obj/agent.o:src/agent.cc include/agent.hh
 	         $(CXX) -c $< -o $@ $(CXXFLAGS) $(LIBRARY) $(INCLUDE)
-obj/Router.o:src/Router.cc include/Router.h
+obj/router.o:src/router.cc include/router.hh
 	         $(CXX) -c $< -o $@ $(CXXFLAGS) $(LIBRARY) $(INCLUDE)
-obj/Environment.o:src/Environment.cc include/Environment.h
+obj/environment.o:src/environment.cc include/environment.hh
 	         $(CXX) -c $< -o $@ $(CXXFLAGS) $(LIBRARY) $(INCLUDE)
 
 clean:

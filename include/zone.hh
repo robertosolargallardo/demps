@@ -1,18 +1,17 @@
 #ifndef _ZONE_H_
 #define _ZONE_H_
-#include "Glob.h"
+#include <glob.hh>
 
-extern std::mt19937   rng;
-extern std::shared_ptr<LocalCartesian> projector;
-
-class Zone {
+class Zone
+{
 private:
+    LocalCartesian       _projector;
     Polygon2D            _polygon;
     CDT                  _cdt;
 
 public:
     Zone(void);
-    Zone(const json&);
+    Zone(const json&,const json&);
     Zone(const Zone&);
     ~Zone(void);
 
