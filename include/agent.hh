@@ -14,10 +14,10 @@ private:
     double   _min_speed;
     double   _max_speed;
 
-    Point2D						_position;
-    Vector2D					_direction;
+    Point2D  _position;
+    Vector2D _direction;
 
-    model_t                _model;
+    model_t  _model;
 
 public:
     Agent(void);

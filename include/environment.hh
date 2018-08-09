@@ -9,7 +9,7 @@ public:
     typedef KDTree::KDTree<2,Agent> kdtree;
 
 private:
-    std::shared_ptr<kdtree>   _tree;
+    std::shared_ptr<kdtree> _tree;
 
 public:
     Environment(void);
