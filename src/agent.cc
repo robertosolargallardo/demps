@@ -32,30 +32,30 @@ uint32_t Agent::id(void) const {
     return(this->_id);
 }
 Agent::~Agent(void) {
-	;
+   ;
 }
 void Agent::follow_the_crowd(const Neighbors &_neighbors){
-	static thread_local std::random_device device;
+   static thread_local std::random_device device;
    static thread_local std::mt19937 rng(device());
 
-	Vector2D direction(0.0,0.0);
+   Vector2D direction(0.0,0.0);
 
    std::uniform_real_distribution<double> speed(this->_min_speed,this->_max_speed);
 
-	for(auto& neighbor : _neighbors)
-		direction+=neighbor.direction();
+   for(auto& neighbor : _neighbors)
+      direction+=neighbor.direction();
 
    Transformation scale(CGAL::SCALING,1.0,sqrt(direction.squared_length()));
    this->_direction=scale(direction);
 
    Transformation translate(CGAL::TRANSLATION,this->_direction*speed(rng));
-	this->_position=translate(this->_position);
+   this->_position=translate(this->_position);
 }
 void Agent::random_walkway(std::list<Point2D> &_path) {
     this->follow_path(_path);
 }
 void Agent::follow_path(std::list<Point2D> &_path){
-	 static thread_local std::random_device device;
+    static thread_local std::random_device device;
     static thread_local std::mt19937 rng(device());
     if(_path.empty()) return;
 
@@ -75,7 +75,7 @@ void Agent::follow_path(std::list<Point2D> &_path){
         direction=scale(direction);
 
         Transformation translate(CGAL::TRANSLATION,direction*speed(rng));
-	     this->_position=translate(this->_position);
+        this->_position=translate(this->_position);
         break;
     }
 }

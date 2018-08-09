@@ -31,13 +31,13 @@ Agent::Neighbors Environment::neighbors_of(const Agent &_agent,const double &_ma
     this->_tree->find_within_range(_agent,_max_distance,std::back_inserter(results));
 
     for (std::deque<Agent>::iterator it=results.begin(); it!=results.end(); ++it) {
-	     Agent agent=*it;
-		  if(agent.model()==_model){	
+        Agent agent=*it;
+        if(agent.model()==_model){   
             dist=_agent.distance(agent);
             if(dist<=_max_distance)
                 neighbors.push_back(agent);
         }
-	 }
+    }
 
     return(neighbors);
 }
