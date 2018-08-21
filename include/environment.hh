@@ -6,6 +6,8 @@
 class Environment
 {
 public:
+    /*inline static double tac(std::shared_ptr<Agent> agent,size_t k) {return((agent->position())[k]);}
+    typedef KDTree::KDTree<2,std::shared_ptr<Agent>,std::pointer_to_binary_function<std::shared_ptr<Agent>,size_t,double>> kdtree;*/
     typedef KDTree::KDTree<2,Agent> kdtree;
 
 private:
@@ -19,6 +21,6 @@ public:
     Environment& operator=(const Environment&);
 
     Agent::Neighbors neighbors_of(const Agent&,const double&,const model_t&);
-    void update(const std::vector<Agent>&);
+    void update(std::vector<Agent>&) const;
 };
 #endif
